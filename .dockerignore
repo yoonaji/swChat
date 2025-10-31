@@ -12,13 +12,13 @@ __pycache__/
 # appTest.py
 # build_index_tables_one_xlsx_qdrant.py
 # build_index_text_qdrant.py
-# cleanJson.py
+# cleanJsonl.py
 # extractionText.py
 
 # 데이터/원본 자료(이미지 부피 증가 방지)
 realTable.xlsx
 sw_pdf.pdf
-sw_pdf_text.cleaned.json
+sw_pdf_text.cleaned.jsonl
 
 # VCS/IDE
 .git/
