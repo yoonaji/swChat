@@ -1,0 +1,10 @@
+pandas
+openpyxl
+qdrant-client
+langchain
+langchain-community
+langchain-openai
+langchain_qdrant
+fastapi
+uvicorn
+python-dotenv

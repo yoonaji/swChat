@@ -1,0 +1,27 @@
+# 파이썬 캐시/임시
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# 민감정보/로컬설정
+.env
+
+# 개발용/빌드용 스크립트(런타임 불필요)
+# appTest.py
+# build_index_tables_one_xlsx_qdrant.py
+# build_index_text_qdrant.py
+# cleanJson.py
+# extractionText.py
+
+# 데이터/원본 자료(이미지 부피 증가 방지)
+realTable.xlsx
+sw_pdf.pdf
+sw_pdf_text.cleaned.json
+
+# VCS/IDE
+.git/
+.vscode/
+.idea/
+.DS_Store
