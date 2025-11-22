@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package retriever;
+
+service RetrieverService {
+  rpc Retrieve (RetrieveRequest) returns (RetrieveResponse);
+}
+
+message RetrieveRequest {
+  string query = 1;
+}
+
+message RetrieveResponse {
+  string answer = 1; 
+  repeated Document documents = 2; 
+}
+
+message Document {
+  string page_content = 1;
+  Metadata metadata = 2;
+}
+
+message Metadata {
+  string sheet = 1;
+  string row_idx = 2;
+  string table_title = 3;
+}
