@@ -1,13 +1,25 @@
 version: '3.8'
 
 services:
+  gateway:
+    build:
+      context: .             
+      dockerfile: gateway/Dockerfile
+    container_name: gateway
+    ports:
+      - "8000:8000"           
+    environment:
+      - RETRIEVER_HOST=retriever:50051
+      - GENERATOR_HOST=generator:50052
+    depends_on:
+      - retriever
+      - generator
+
   generator:
     
     build: ./generator
     container_name: generator
-    ports:
-      - "8000:8000"
-
+    command: python app_generator.py
     env_file:
       - ./.env
   
@@ -18,8 +30,7 @@ services:
 
     build: ./retriever
     container_name: retriever
-    ports:
-      - "8001:8001"
+    command: python app_retriever.py
     env_file:
       - ./.env
     depends_on:

@@ -8,3 +8,4 @@ langchain_qdrant
 langchain_core
 grpcio 
 grpcio-tools
+protobuf

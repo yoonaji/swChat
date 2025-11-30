@@ -38,7 +38,7 @@ except Exception as e:
     raise RuntimeError(f"🚨 [Retriever] Initialization failed: {e}")
 
 class RetrieverServicer(retriever_pb2_grpc.RetrieverServiceServicer):
-    async def Search(self, request, context):
+    async def Retrieve(self, request, context):
         query = request.query
         print(f"grpc 검색 요청: {query}")
         
@@ -50,7 +50,7 @@ class RetrieverServicer(retriever_pb2_grpc.RetrieverServiceServicer):
             for d in docs:
                 meta = d.metadata
                 proto_docs.append(retriever_pb2.Document(
-                    content=d.page_content,
+                    page_content=d.page_content,
                     metadata=retriever_pb2.Metadata(
                         sheet=str(meta.get("sheet", "")),
                         row_idx=str(meta.get("row_idx", "")),
@@ -58,13 +58,13 @@ class RetrieverServicer(retriever_pb2_grpc.RetrieverServiceServicer):
                     )
                 ))
     
-            return retriever_pb2.SearchResponse(documents=proto_docs)
+            return retriever_pb2.RetrieveResponse(documents=proto_docs)
             
         except Exception as e:
             print(f"🚨 Error: {e}")
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)
-            return retriever_pb2.SearchResponse()
+            return retriever_pb2.RetrieveResponse()
 
 
 async def serve():

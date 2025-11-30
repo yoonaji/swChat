@@ -2,7 +2,9 @@ fastapi
 uvicorn
 python-dotenv
 langchain
-httpx  # ⭐️ Retriever API와 통신하기 위해 필수
 langchain_openai
 langchain_qdrant
 langchain_core
+grpcio
+grpcio-tools # .pb2.py 및 .pb2_grpc.py 파일을 생성하는 데 필요한 도구
+protobuf

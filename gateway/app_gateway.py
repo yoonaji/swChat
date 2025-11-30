@@ -9,8 +9,6 @@ import generator_pb2_grpc, generator_pb2
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../retriever')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../generator')))
 
-
-# ⭐️ [K8s 준비] 환경변수에서 주소를 가져오도록 변경 (기본값은 로컬)
 RETRIEVER_HOST = os.getenv("RETRIEVER_HOST", "localhost:50051")
 GENERATOR_HOST = os.getenv("GENERATOR_HOST", "localhost:50052")
 
@@ -19,11 +17,9 @@ async def lifespan(app: FastAPI):
     print(f"🔗 [Gateway] Connecting to Retriever at {RETRIEVER_HOST}")
     print(f"🔗 [Gateway] Connecting to Generator at {GENERATOR_HOST}")
 
-    # 1. Retriever 연결
     retriever_conn = grpc.aio.insecure_channel(RETRIEVER_HOST)
     app.state.retriever = retriever_pb2_grpc.RetrieverServiceStub(retriever_conn)
     
-    # 2. Generator 연결
     generator_conn = grpc.aio.insecure_channel(GENERATOR_HOST)
     app.state.generator = generator_pb2_grpc.GeneratorServiceStub(generator_conn)
     
@@ -36,14 +32,14 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/ask")
 async def ask(query: str):
-    search_res = await app.state.retriever.Search(
-        retriever_pb2.SearchRequest(query=query)
-    )
+    retriever_res = await app.state.retriever.Retrieve(
+            retriever_pb2.RetrieveRequest(query=query)
+        )
     
-    context_texts = [d.content for d in search_res.documents]
+    contexts = [doc.page_content for doc in retriever_res.documents]
     
     sources = []
-    for d in search_res.documents:
+    for d in retriever_res.documents:
         sources.append({
             "sheet": d.metadata.sheet,
             "row": d.metadata.row_idx,
@@ -51,7 +47,7 @@ async def ask(query: str):
         })
         
     gen_res = await app.state.generator.Generate(
-        generator_pb2.GenerateRequest(query=query, contexts=context_texts)
+        generator_pb2.GenerateRequest(query=query, contexts=contexts)
     )
     
     return {

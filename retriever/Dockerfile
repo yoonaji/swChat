@@ -9,11 +9,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 4. 나머지 소스 코드 복사
-COPY app_retriever.py .
+COPY . .
 
 # 5. 컨테이너가 8001 포트를 사용함을 명시 (문서용)
 EXPOSE 8001
 
 # 6. 서버 실행
 #    Uvicorn을 직접 실행하여 0.0.0.0 호스트의 8001 포트에서 대기
-CMD ["uvicorn", "app_retriever:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["python", "app_retriever.py"] 
