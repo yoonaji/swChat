@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: ai-server
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: ai-server
+  template:
+    metadata:
+      labels:
+        app: ai-server
+    spec:
+      containers:
+      - name: ai-server
+        image: gcr.io/프로젝트ID/ai-server:latest # GKE 레지스트리 주소
+        ports:
+        - containerPort: 8080 
+        envFrom:
+        - secretRef:
+            name: jandi-secret
