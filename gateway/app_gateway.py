@@ -14,8 +14,6 @@ GENERATOR_HOST = os.getenv("GENERATOR_HOST", "localhost:50052")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print(f"🔗 [Gateway] Connecting to Retriever at {RETRIEVER_HOST}")
-    print(f"🔗 [Gateway] Connecting to Generator at {GENERATOR_HOST}")
 
     retriever_conn = grpc.aio.insecure_channel(RETRIEVER_HOST)
     app.state.retriever = retriever_pb2_grpc.RetrieverServiceStub(retriever_conn)
