@@ -5,9 +5,7 @@ import asyncio
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-from contextlib import asynccontextmanager
 import generator_pb2
 import generator_pb2_grpc
 
@@ -57,8 +55,7 @@ class GeneratorServicer(generator_pb2_grpc.GeneratorServiceServicer):
                 "context": context_str,
                 "question": query
             })
-        
-        
+               
         return generator_pb2.GenerateResponse(answer=response_text)
             
  
@@ -66,7 +63,7 @@ async def serve():
     server = grpc.aio.server()
     generator_pb2_grpc.add_GeneratorServiceServicer_to_server(GeneratorServicer(), server)
     server.add_insecure_port('[::]:50052')
-    print("🚀 Generator gRPC Server running on port 50052")
+    print("Generator gRPC Server running on port 50052")
     await server.start()
     await server.wait_for_termination()
 
